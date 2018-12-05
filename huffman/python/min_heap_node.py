@@ -10,6 +10,3 @@ class MinHeapNode:
 
     def __lt__(self, node):
         return self.frequency < node.frequency
-
-    def __eq__(self, node):
-        return self.frequency == node.frequency

@@ -12,8 +12,11 @@ class MinHeap:
             temp += "%-20s : %30s\n" % (i, str(node))
         return temp
 
-    def insert(self, value, frequency):
-        self.elements.append(MinHeapNode(value, frequency))
+    def insert(self, value, frequency=None):
+        if frequency is None:
+            self.elements.append(value)
+        else:
+            self.elements.append(MinHeapNode(value, frequency))
         self.size += 1
         i = self.size - 1
         parent = self.parent(i)
@@ -58,6 +61,26 @@ class MinHeap:
         for i in range(self.size - 1, 0, -1):
             self.swap(0, i)
             self.min_heapify(i, 0)
+
+    def tree_conversion(self):
+        while 1 < self.size:
+            left = self.extract_min()
+            right = self.extract_min()
+            node = MinHeapNode(None, left.frequency + right.frequency)
+            node.left = left
+            node.right = right
+            self.insert(node)
+
+    def get_tree_size(self):
+        if 0 == self.size:
+            return 0
+        return self.get_size_from(self.elements[0])
+
+    def get_size_from(self, node):
+        if node.left is None:
+            return 0
+        else:
+            return 1 + self.get_size_from(node.left) + self.get_size_from(node.right)
 
     @staticmethod
     def parent(i):
